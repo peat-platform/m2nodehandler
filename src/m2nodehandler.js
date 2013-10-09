@@ -6,7 +6,6 @@ var M2nodeHandler = function() {
 
    var _self = this;
    var zmq   = require('zmq')
-   var Sys   = require('sys')
 
 
    function M2nodeHandler(){
@@ -79,11 +78,11 @@ var M2nodeHandler = function() {
    M2nodeHandler.prototype.parseNetstring = function (ns) {
 
       var nsSplit = _self.split(ns, ':', 2)
-      var length  = parseInt  (nsSplit[0])
+      var length  = parseInt  (nsSplit[0], 10)
       var payload = nsSplit[1]
 
       if (payload[length] !== ',') {
-         throw "Netstring did not end in ','"
+         throw 'Netstring did not end in ","'
       }
 
       return [ payload.slice(0, length), payload.slice(length + 1) ]
@@ -150,26 +149,26 @@ var M2nodeHandler = function() {
       }
 
       return {
-         "status"     : status,
-         "headers"    : headers,
-         "body"       : body,
-         "setBody"    : setBody,
-         "setHeaders" : setHeaders,
-         "setStatus"  : setStatus,
-         "addHeader"  : addHeader
+         'status'     : status,
+         'headers'    : headers,
+         'body'       : body,
+         'setBody'    : setBody,
+         'setHeaders' : setHeaders,
+         'setStatus'  : setStatus,
+         'addHeader'  : addHeader
       }
 
    }
 
 
    M2nodeHandler.prototype.buildZmqResponse = function(zmqMsg, responseObj){
-      return ""
+      return ''
          + zmqMsg.uuid
-         + " "
+         + ' '
          + String(zmqMsg.connId).length
-         + ":"
+         + ':'
          + zmqMsg.connId
-         + ", "
+         + ', '
          + _self.buildHttpResponse(responseObj)
    }
 
@@ -185,26 +184,23 @@ var M2nodeHandler = function() {
       headers['Content-Length'] = body.length
 
       for (var header in headers) {
-         if (!__hasProp.call(headers, header)) {
-            continue
+         if (__hasProp.call(headers, header)) {
+            header_arr.push('' + header + ': ' + headers[header])
          }
-         var value = headers[header]
-         header_arr.push("" + header + ": " + headers[header])
       }
 
-      return "HTTP/1.1 "
+      return 'HTTP/1.1 '
          + status
-         + " "
+         + ' '
          + _self.statusMessages[status]
-         + "\r\n"
-         + header_arr.join("\r\n")
-         + "\r\n\r\n"
+         + '\r\n'
+         + header_arr.join('\r\n')
+         + '\r\n\r\n'
          + body
    }
 
 
    M2nodeHandler.prototype.connect = function (params, callback) {
-
 
       var pub  = zmq.createSocket('pub')
       var pull = zmq.createSocket('pull')
@@ -215,7 +211,7 @@ var M2nodeHandler = function() {
       pull.identity = params.ident
       pub.identity  = params.ident
 
-      return pull.on('message', function (envelope, blank, data) {
+      return pull.on('message', function (envelope) {
          var zmqMsg = _self.parse(envelope.toString('utf8'))
 
          return callback(zmqMsg, function (responseObj) {
