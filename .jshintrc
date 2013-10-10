@@ -15,7 +15,7 @@
    "indent"       : 3,
    "strict"       : true,
    "forin"        : true,
-   "quotmark"     : true,
+   "quotmark"     : "single",
    "maxparams"    : 5,
    "maxdepth"     : 4,
    "maxstatements": 30,

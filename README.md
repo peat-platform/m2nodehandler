@@ -13,6 +13,18 @@ var m2nodehandler = require('m2nodehandler');
 ## Documentation
 _(Coming soon)_
 
+To build type grunt
+
+You will need to install the following
+sudo port install JsCoverage
+sudo port install phantomjs
+
+or
+
+sudo apt-get install JsCoverage
+sudo apt-get install phantomjs
+
+
 ## Examples
 'use strict';
 

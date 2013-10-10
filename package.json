@@ -20,7 +20,7 @@
          "url": "openi-ict.eu/blob/master/LICENSE-MIT"
       }
    ],
-   "main": "src/m2nodehandler.js",
+   "main": "lib/m2nodehandler.js",
    "engines": {
          "node": ">= 0.8.0"
    },
@@ -34,6 +34,14 @@
       "grunt-contrib-jshint": "~0.6.4",
       "grunt-contrib-nodeunit": "~0.2.0",
       "grunt-contrib-watch": "~0.5.3",
+      "grunt-contrib-clean" : "",
+      "grunt-contrib-concat" : "",
+      "grunt-contrib-uglify" : "",
+      "grunt-testem" : "",
+      "grunt-qunit-cov" : "",
+      "grunt-plato" : "",
+      "grunt-node-tap" : "",
+      "grunt-istanbul" : "",
       "grunt": "~0.4.1",
       "tap": ""
    },
