@@ -2,9 +2,8 @@
  * Created by dmccarthy on 09/10/2013.
  */
 
-var m2n = require('../lib/m2nodehandler.js')
-
-
+var base_path = require('./basePath.js');
+var m2n       = require(base_path + '../lib/m2nodehandler.js')
 
 
 /*

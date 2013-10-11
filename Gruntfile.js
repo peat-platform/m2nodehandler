@@ -9,16 +9,14 @@ module.exports = function(grunt) {
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
       clean: {
-         build:['build'],
-         cover:['build/instrument/test']
+         build:['build']
       },
       jshint: {
-         all: ['lib/*.js'],
+         all: [lib],
          options: grunt.file.readJSON('.jshintrc')
       },
       nodeunit: {
-         test:  [tests],
-         cover: [build_tests]
+         all: tests
       },
       watch : {
          files : [ lib, tests ],
@@ -26,7 +24,7 @@ module.exports = function(grunt) {
       },
       plato: {
          options: {
-            title: 'Awesome Project',
+            title: 'Mongrel2 Node Handler',
             jshint: grunt.file.readJSON('.jshintrc')
          },
          metrics: {
@@ -36,10 +34,12 @@ module.exports = function(grunt) {
          }
       },
       instrument : {
-         files : [lib, tests],
+         files : [lib],
          options : {
             lazy : true,
-            basePath : 'build/instrument/'
+            excludes : tests,
+            basePath : 'build/instrument/',
+            flatten : false
          }
       },
       reloadTasks : {
@@ -65,9 +65,9 @@ module.exports = function(grunt) {
          options: {
             thresholds: {
                'statements': 90,
-               'branches': 90,
-               'lines': 90,
-               'functions': 90
+               'branches'  : 90,
+               'lines'     : 90,
+               'functions' : 90
             },
             dir: 'reports',
             root: 'build/'
@@ -98,12 +98,13 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-istanbul-coverage');
    grunt.loadNpmTasks('grunt-contrib-nodeunit');
    grunt.loadNpmTasks('grunt-contrib-watch');
+   grunt.loadNpmTasks('grunt-config');
 
    // Default task(s).
 
-   grunt.registerTask('test',     ['nodeunit:test']);
-   grunt.registerTask('cover',    ['clean:build', 'instrument', 'reloadTasks', "nodeunit:cover", 'clean:cover', 'storeCoverage', 'makeReport']);
-   grunt.registerTask('default',  ['required', 'jshint', 'nodeunit:test']);
-   grunt.registerTask('jenkins',  ['jshint', 'cover', 'coverage', 'plato']);
+   grunt.registerTask('test',     ['nodeunit']);
+   grunt.registerTask('cover',    ['clean:build', 'instrument', 'reloadTasks', 'nodeunit', 'storeCoverage', 'makeReport']);
+   grunt.registerTask('default',  ['required',    'jshint',     'nodeunit' ]);
+   grunt.registerTask('jenkins',  ['jshint',      'cover',      'coverage',    'plato']);
 
 };
