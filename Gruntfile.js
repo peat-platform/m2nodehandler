@@ -2,16 +2,27 @@
 
 module.exports = function(grunt) {
 
-   // Project configuration.
+   var tests       = 'test/**/*_test.js'
+   var build_tests = 'build/instrument/' + tests
+   var lib         = 'lib/**/*.js'
+
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
-      clean: ['build'],
+      clean: {
+         build:['build'],
+         cover:['build/instrument/test']
+      },
       jshint: {
          all: ['lib/*.js'],
          options: grunt.file.readJSON('.jshintrc')
       },
       nodeunit: {
-         files: ['test/**/*_test.js'],
+         test:  [tests],
+         cover: [build_tests]
+      },
+      watch : {
+         files : [ lib, tests ],
+         tasks : 'default'
       },
       plato: {
          options: {
@@ -20,13 +31,12 @@ module.exports = function(grunt) {
          },
          metrics: {
             files: {
-               'build/metrics': [ 'lib/*.js' ]
+               'build/metrics': [ lib ]
             }
          }
       },
-      // Grunt-Istanbul Config Section
       instrument : {
-         files : 'lib/*.js',
+         files : [lib, tests],
          options : {
             lazy : true,
             basePath : 'build/instrument/'
@@ -44,15 +54,33 @@ module.exports = function(grunt) {
          src : 'build/reports/**/*.json',
          options : {
             reporters : {
-               'lcov':{dir:'build/reports/'},
+               'lcov'     :{dir:'build/reports/'},
                'cobertura':{dir:'build/reports/'}
             },
-            //dir : 'istanbul/reports/',
             print : 'detail'
 
          }
+      },
+      coverage: {
+         options: {
+            thresholds: {
+               'statements': 90,
+               'branches': 90,
+               'lines': 90,
+               'functions': 90
+            },
+            dir: 'reports',
+            root: 'build/'
+         }
+      },
+      required: {
+         libs: {
+            options: {
+               install: true
+            },
+            src: [lib]
+         }
       }
-      //*******************************
 
    });
 
@@ -60,17 +88,22 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-jshint');
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-nodeunit');
+   grunt.loadNpmTasks('grunt-contrib-qunit');
+   grunt.loadNpmTasks('grunt-required');
    grunt.loadNpmTasks('grunt-testem');
    grunt.loadNpmTasks('grunt-qunit-cov');
    grunt.loadNpmTasks('grunt-plato');
    grunt.loadNpmTasks('grunt-node-tap');
    grunt.loadNpmTasks('grunt-istanbul');
+   grunt.loadNpmTasks('grunt-istanbul-coverage');
    grunt.loadNpmTasks('grunt-contrib-nodeunit');
    grunt.loadNpmTasks('grunt-contrib-watch');
 
    // Default task(s).
-   grunt.registerTask('istanbul', ['instrument', 'reloadTasks','storeCoverage', 'makeReport']);
-   grunt.registerTask('default',  ['jshint', 'clean', 'nodeunit', 'istanbul']);
-   grunt.registerTask('jenkins',  ['jshint', 'clean', 'nodeunit', 'istanbul', 'plato']);
+
+   grunt.registerTask('test',     ['nodeunit:test']);
+   grunt.registerTask('cover',    ['clean:build', 'instrument', 'reloadTasks', "nodeunit:cover", 'clean:cover', 'storeCoverage', 'makeReport']);
+   grunt.registerTask('default',  ['required', 'jshint', 'nodeunit:test']);
+   grunt.registerTask('jenkins',  ['jshint', 'cover', 'coverage', 'plato']);
 
 };

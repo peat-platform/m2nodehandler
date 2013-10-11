@@ -28,10 +28,7 @@ var m2n = require('../lib/m2nodehandler.js')
  */
 
 exports['statuses'] = {
-   setUp    : function (done) {
-      // setup here
-      done();
-   },
+
    'Testing response status values': function (test) {
 
       test.equal(m2n.status.OK_200,           200, "Should be 200")
