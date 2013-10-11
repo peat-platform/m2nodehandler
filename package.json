@@ -1,50 +1,52 @@
 {
-   "name": "m2nodehandler",
-   "description": "Node implementation of Mongrel2 handler",
-   "version": "0.1.0",
-   "homepage": "openi-ict.eu",
-   "author": {
-      "name": "dmccarthy",
-      "email": "dmccarthy@tssg.org"
-   },
-   "repository": {
-      "type": "git",
-      "url": "git@gitlab.openi-ict.eu:cloudlet_platform.git"
-   },
-   "bugs": {
-      "url": ""
-   },
-   "licenses": [
-      {
-         "type": "MIT",
-         "url": "openi-ict.eu/blob/master/LICENSE-MIT"
-      }
-   ],
-   "main": "lib/m2nodehandler.js",
-   "engines": {
-         "node": ">= 0.8.0"
-   },
-   "scripts": {
-      "test": "grunt nodeunit"
-   },
-   "dependencies": {
-      "zmq": "~2.5.1"
-   },
-   "devDependencies": {
-      "grunt-contrib-jshint": "~0.6.4",
-      "grunt-contrib-nodeunit": "~0.2.0",
-      "grunt-contrib-watch": "~0.5.3",
-      "grunt-contrib-clean" : "",
-      "grunt-contrib-concat" : "",
-      "grunt-contrib-uglify" : "",
-      "grunt-istanbul-coverage" : "",
-      "grunt-testem" : "",
-      "grunt-qunit-cov" : "",
-      "grunt-plato" : "",
-      "grunt-node-tap" : "",
-      "grunt-istanbul" : "",
-      "grunt": "~0.4.1",
-      "tap": ""
-   },
-   "keywords": []
+  "name": "m2nodehandler",
+  "description": "Node implementation of Mongrel2 handler",
+  "version": "0.1.0",
+  "homepage": "http://openi-icot.eu",
+  "publishConfig": {
+    "registry": "http://localhost:5984/registry/_design/app/_rewrite"
+  },
+  "author": "dmccarthy <dmccarthy@tssg.org>",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.openi-ict.eu:cloudlet_platform.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "openi-ict.eu/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/m2nodehandler.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "dependencies": {
+    "zmq": "~2.5.1",
+    "private-repo":"git+ssh://git@gitlab.openi-ict.eu:cloudlet_platform.git"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "",
+    "grunt-contrib-concat": "",
+    "grunt-contrib-uglify": "",
+    "grunt-istanbul-coverage": "",
+    "grunt-testem": "",
+    "grunt-qunit-cov": "",
+    "grunt-plato": "",
+    "grunt-node-tap": "",
+    "grunt-istanbul": "",
+    "grunt": "~0.4.1",
+    "tap": ""
+  },
+  "keywords": [],
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  }
 }
