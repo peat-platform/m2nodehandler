@@ -41,6 +41,7 @@
     "grunt-node-tap": "",
     "grunt-istanbul": "",
     "grunt": "~0.4.1",
+    "grunt-config":"",
     "tap": ""
   },
   "keywords": []
