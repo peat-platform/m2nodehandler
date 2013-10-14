@@ -25,8 +25,7 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "zmq": "~2.5.1",
-    "private-repo":"git+ssh://git@gitlab.openi-ict.eu:cloudlet_platform.git"
+    "zmq": "~2.5.1"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
@@ -44,9 +43,5 @@
     "grunt": "~0.4.1",
     "tap": ""
   },
-  "keywords": [],
-  "directories": {
-    "lib": "./lib",
-    "test": "./test"
-  }
+  "keywords": []
 }
