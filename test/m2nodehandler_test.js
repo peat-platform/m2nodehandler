@@ -2,6 +2,8 @@
  * Created by dmccarthy on 09/10/2013.
  */
 
+var zmq       = require('zmq')
+var sinon     = require('sinon')
 var base_path = require('./basePath.js');
 var m2n       = require(base_path + '../lib/m2nodehandler.js')
 
@@ -91,11 +93,37 @@ exports['testGetJSON'] = {
 
 exports['testConnect'] = {
 
-    setUp   : function(done) {
+    setUp   : function (done) {
+
+        this.params = { recv_spec:'tcp://127.0.0.1:9997',
+            send_spec:'tcp://127.0.0.1:9996',
+            ident:'test' }
+
+        this.mockServer = zmq.socket("push")
+        this.mockServer.bindSync("tcp://127.0.0.1:9997")
+
         done()
     },
-    'test connection established': function(test) {
-        test.passed
+    tearDown: function (done) {
+        this.mockServer.close()
+        done()
+    },
+    'test connection established and message parsed correctly': function (test) {
+        m2n.connect( this.params, function( msg, responseCallback ) {
+            test.equal(msg.path, "/test", "The path should be /test")
+            test.equal(msg.uuid, "test", "The uuid should be test")
+            test.equal(msg.connId, "2", "The connection id should be 2")
+            test.equal(msg.headers, "{}", "The headers should be empty")
+            test.equal(msg.body, "{}", "The headers should be empty")
+        })
+        this.mockServer.send('test 2 /test 0:,0:,')
+        test.done()
+    },
+    'test invalid zeromq format exception throw': function (test) {
+        m2n.connect( this.params, function( msg, responseCallback ) {})
+
+        test.throws(this.mockServer.send(''))
+
         test.done()
     }
 }
