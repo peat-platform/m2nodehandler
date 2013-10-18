@@ -42,7 +42,8 @@
     "grunt-istanbul": "",
     "grunt": "~0.4.1",
     "grunt-config":"",
-    "tap": ""
+    "tap": "",
+    "sinon": ""
   },
   "keywords": []
 }
