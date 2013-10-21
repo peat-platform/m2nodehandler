@@ -118,12 +118,5 @@ exports['testConnect'] = {
         })
         this.mockServer.send('test 2 /test 0:,0:,')
         test.done()
-    },
-    'test invalid zeromq format exception throw': function (test) {
-        m2n.connect( this.params, function( msg, responseCallback ) {})
-
-        test.throws(this.mockServer.send(''))
-
-        test.done()
     }
 }
