@@ -115,7 +115,51 @@ node script.js
 ```
 
 
+### Example 2: Node application to node application
 
+Communications between two small node applications via ZeroMQ. The connection isn't request-reply queue but two separate push-pull queues.
+
+Create a file named node1.js and paste the following code.
+
+```javascript
+var zmq   = require('m2nodehandler')
+
+var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49994'});
+
+zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49995', id:'node1'}, function( msg ) {
+
+   msg.count = msg.count + 1;
+
+   pushQ.push(msg)
+
+});
+```
+
+Create another file called node2.js and paste the following JavaScript.
+
+```Javascript
+var zmq  = require('m2nodehandler')
+
+var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49995'});
+
+zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49994', id:'node2'}, function( msg ) {
+
+   console.log("Count = " + msg.count);
+
+   pushQ.push(msg)
+
+});
+
+pushQ.push({count:0})
+```
+
+Finally install this module, start the two node applications in separate consoles. You should see the counter increase on the second console.
+
+```javascript
+npm install git+ssh://git@gitlab.openi-ict.eu:m2nodehandler.git
+node node1.js
+node node2.js
+```
 
 ## Conributors
 
