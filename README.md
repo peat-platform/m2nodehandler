@@ -14,7 +14,7 @@ sudo port install phantomjs
 
 or
 
-```
+```bash
 sudo apt-get install JsCoverage
 sudo apt-get install phantomjs
 ```
