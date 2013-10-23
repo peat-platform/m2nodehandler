@@ -38,21 +38,25 @@ __header_html__ -   Response objects default headers for HTML content.
    
 ###Functions
 
-* __bindToMong2PullQ(config, callback)__  
+* __bindToMong2PullQ(config, callback)__
     This function binds to a Mongrel2 ZeroMQ pull queue with the given IP address and port. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed.
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
     *function (msg)* this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function *e.g. function(msg){console.log(msg)}*
     * **returns**  null
+
+
     
-* __bindToMong2PubQ__  
+* __bindToMong2PubQ__
  This function binds to a Mongrel2 ZeroMQ push queue with the given IP address and port. Returns an object that can push data onto the queue.  
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
     * **returns**  
-    An object with the function **publish** which pushes a __Response__ object with the Mongrel2 queue's **uuid** and the connected clients **connid** onto the bound queue. e.g. *obj.publish('uuid', 'connid', zmq.Response( m2n.status.OK_200, m2n.header_json, '{"message":"Hello, World!"}' ))* 
-    
-* __bindToPullQ(config, callback)__  
+    An object with the function **publish** which pushes a __Response__ object with the Mongrel2 queue's **uuid** and the connected clients **connid** onto the bound queue. e.g. *obj.publish('uuid', 'connid', zmq.Response( m2n.status.OK_200, m2n.header_json, '{"message":"Hello, World!"}' ))*
+
+
+
+* __bindToPullQ(config, callback)__
     This function binds to a ZeroMQ pull queue with the given IP address and port. It attaches the given callback function to the on message event of the queue. I.e. every time a message is recieved the function is executed.
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
@@ -60,7 +64,8 @@ __header_html__ -   Response objects default headers for HTML content.
     * **returns**  null
     
 
-* __bindToPushQ(config)__  
+
+* __bindToPushQ(config)__
     This function binds to a ZeroMQ push queue with the given IP address and port. Returns an object that can push a JavaScript object to the queue.  
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. {spec:'tcp://127.0.0.1:49994'}*  
