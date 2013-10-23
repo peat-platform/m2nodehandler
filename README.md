@@ -6,7 +6,7 @@ m2nodehandler doubles as a node.js Mongrel2 handler and a lightweight abstractio
 Install the module with: `npm install git+ssh://git@gitlab.openi-ict.eu:m2nodehandler.git`
 
 You will need to install the following through macports or aptitude.
-```bash
+```javascript
 sudo port install JsCoverage
 sudo port install phantomjs
 ```
