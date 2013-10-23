@@ -115,49 +115,20 @@ node script.js
 ```
 
 
-### Example 2: Node application to node application
-Communications between two small node applications via ZeroMQ. The connection isn't request-reply queue but two separate push-pull queues.
 
-Create a file named node1.js and paste the following code.
 
-```javascript
-var zmq   = require('m2nodehandler')
+## Conributors
 
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49994'});
+* Donal McCarthy (dmccarthy@tssg.org)
+* David Benson   (dbenson@tssg.org)
+* Dylan Conway (dconway@tssg.org)
 
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49995', id:'node1'}, function( msg ) {
 
-   msg.count = msg.count + 1;
+## Release History
+**0.1.0** *(23/10/14 dmccarthy@tssg.org, dbenson@tssg.org, dconway@tssg.org)* Includes Mongrel2 handler and node-to-node ZMQ communication helpers.
 
-   pushQ.push(msg)
 
-});
-```
-
-Create another file called node2.js and paste the following JavaScript.
-
-```Javascript
-var zmq  = require('m2nodehandler')
-
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49995'});
-
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49994', id:'node2'}, function( msg ) {
-
-   console.log("Count = " + msg.count);
-
-   pushQ.push(msg)
-
-});
-
-pushQ.push({count:0})
-```
-
-Finally install this module, start the two node applications in separate consoles. You should see the counter increase on the second console.
-
-```javascript
-npm install git+ssh://git@gitlab.openi-ict.eu:m2nodehandler.git
-node node1.js
-node node2.js
-```
-
+## License
+Copyright (c) 2013
+Licensed under the MIT license.
 
