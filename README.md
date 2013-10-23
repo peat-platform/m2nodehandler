@@ -39,7 +39,7 @@ var zmq = require('m2nodehandler');
 
 This example connects to Mongrel2 instance running on port 49996 and 49997. To configure the Mongrel2 load the configuration file with the following values.
 
-```python
+```javascript
 
 node_handler = Handler(
   send_spec  = 'tcp://127.0.0.1:49997',
