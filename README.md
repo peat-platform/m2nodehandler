@@ -39,7 +39,7 @@ var zmq = require('m2nodehandler');
 
 This example connects to Mongrel2 instance running on port 49996 and 49997. To configure the Mongrel2 load the configuration file with the following values.
 
-```javascript
+```python
 
 node_handler = Handler(
   send_spec  = 'tcp://127.0.0.1:49997',
@@ -135,6 +135,23 @@ zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49995', id:'node1'}, function( msg ) {
 });
 ```
 
+Create another file called node2.js and paste the following JavaScript.
+
+```javascript
+var zmq  = require('m2nodehandler')
+
+var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49995'});
+
+zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49994', id:'node2'}, function( msg ) {
+
+   console.log("Count = " + msg.count);
+
+   pushQ.push(msg)
+
+});
+
+pushQ.push({count:0})
+```
 
 Finally install this module, start the two node applications in separate consoles. You should see the counter increase on the second console.
 
