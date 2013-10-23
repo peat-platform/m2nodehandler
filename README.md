@@ -36,14 +36,14 @@ __header_json__  -  Response objects default headers for JSON formatted content.
 __header_html__ -   Response objects default headers for HTML content.  
 
    
-###Functions
+### Functions
 
 * __bindToMong2PullQ(config, callback)__
     This function binds to a Mongrel2 ZeroMQ pull queue with the given IP address and port. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed.
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
     *function (msg)* this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function *e.g. function(msg){console.log(msg)}*
-    * **returns**  null
+    * **returns**  null  
 
 
     
