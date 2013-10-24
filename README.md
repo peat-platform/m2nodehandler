@@ -30,10 +30,10 @@ grunt jenkins
 ## Documentation
 
 ### Objects
- __status__ - Contains object with human readable text to HTTP status code e.g. status.OK_200 = 200, FORBIDDEN_402 = 402, etc.  
-__header_plain__  - Response objects default headers for plain text.  
-__header_json__  -  Response objects default headers for JSON formatted content.  
-__header_html__ -   Response objects default headers for HTML content.  
+**status** - Contains object with human readable text to HTTP status code e.g. status.OK_200 = 200, FORBIDDEN_402 = 402, etc.
+**header_plain**  - Response objects default headers for plain text.
+**header_json**  -  Response objects default headers for JSON formatted content.
+**header_html** -   Response objects default headers for HTML content.
 
    
 ### Functions
@@ -43,7 +43,7 @@ __header_html__ -   Response objects default headers for HTML content.
     * **parameters**  
     *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
     *function (msg)* this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function *e.g. function(msg){console.log(msg)}*
-    * **returns**  null  
+    * **returns**  null
 
 
     
@@ -204,7 +204,7 @@ node node1.js
 node node2.js
 ```
 
-## Conributors
+## Contributors
 
 * Donal McCarthy (dmccarthy@tssg.org)
 * David Benson   (dbenson@tssg.org)
