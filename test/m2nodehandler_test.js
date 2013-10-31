@@ -1,9 +1,8 @@
 /**
  * Created by dmccarthy on 09/10/2013.
  */
-
+var sys       = require('sys')
 var zmq       = require('zmq')
-var sinon     = require('sinon')
 var base_path = require('./basePath.js');
 var m2n       = require(base_path + '../lib/m2nodehandler.js')
 
@@ -76,6 +75,59 @@ exports['testResponseObject'] = {
         test.done()
     }
 }
+
+exports['testParse']          = {
+    setUp                     : function (done) {
+        done()
+    },
+    'test values as expected' : function (test) {
+
+        var mongrelString = "12 4 /test 9:{\"c\":\"d\"},9:{\"a\":\"b\"},";
+        var result        = m2n.parse(mongrelString);
+
+        // The result should not be null.
+        test.notEqual(result, null);
+        // Test the values are as expected.
+        test.equal   (result.uuid, 12);
+        test.equal   (result.connId, 4);
+        test.equal   (result.path, "/test");
+        test.equal   (result.headers.c, "d");
+        test.equal   (result.json.a, "b");
+        test.equal   (result.body, "{\"a\":\"b\"}");
+
+        test.done();
+    }
+};
+
+exports['testParseNetString'] = {
+
+    setUp            : function (done) {
+        done()
+    },
+    'valid format'   : function (test) {
+
+        var validNetstring = "9:'{Hello}',7:{Hello},";
+        var result;
+
+        test.doesNotThrow ( function() {
+            result         = m2n.parseNetstring(validNetstring);
+        });
+        test.notEqual     (result, null, "The object should exist");
+        test.equal        (result.toString(), "\'{Hello}\',7:{Hello},");
+
+        test.done();
+    },
+    'invalid format' : function (test) {
+
+        var invalidNetstring = "0:0:,";
+
+        test.throws ( function() {
+           m2n.parseNetstring(invalidNetstring);
+        });
+
+        test.done();
+    }
+};
 
 exports['testGetJSON'] = {
 
