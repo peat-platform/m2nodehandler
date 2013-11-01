@@ -3,7 +3,8 @@
  */
 var sys       = require('sys')
 var zmq       = require('zmq')
-var base_path = require('./basePath.js');
+var sinon     = require('sinon')
+var base_path = require('./basePath.js')
 var m2n       = require(base_path + '../lib/m2nodehandler.js')
 
 
@@ -82,20 +83,19 @@ exports['testParse']          = {
     },
     'test values as expected' : function (test) {
 
-        var mongrelString = "12 4 /test 9:{\"c\":\"d\"},9:{\"a\":\"b\"},";
-        var result        = m2n.parse(mongrelString);
+        var mongrelString = "12 4 /test 9:{\"c\":\"d\"},9:{\"a\":\"b\"},"
+        var result        = m2n.parse(mongrelString)
 
         // The result should not be null.
-        test.notEqual(result, null);
+        test.notEqual(result, null)
         // Test the values are as expected.
-        test.equal   (result.uuid, 12);
-        test.equal   (result.connId, 4);
-        test.equal   (result.path, "/test");
-        test.equal   (result.headers.c, "d");
-        test.equal   (result.json.a, "b");
-        test.equal   (result.body, "{\"a\":\"b\"}");
-
-        test.done();
+        test.equal(   result.uuid,      12              )
+        test.equal(   result.connId,    4               )
+        test.equal(   result.path,      "/test"         )
+        test.equal(   result.headers.c, "d"             )
+        test.equal(   result.json.a,    "b"             )
+        test.equal(   result.body,      "{\"a\":\"b\"}" )
+        test.done()
     }
 };
 
@@ -105,27 +105,25 @@ exports['testParseNetString'] = {
         done()
     },
     'valid format'   : function (test) {
-
-        var validNetstring = "9:'{Hello}',7:{Hello},";
-        var result;
+        var validNetstring = "9:'{Hello}',7:{Hello},"
+        var result
 
         test.doesNotThrow ( function() {
-            result         = m2n.parseNetstring(validNetstring);
-        });
-        test.notEqual     (result, null, "The object should exist");
-        test.equal        (result.toString(), "\'{Hello}\',7:{Hello},");
-
-        test.done();
+            result         = m2n.parseNetstring(validNetstring)
+        })
+        test.notEqual(result, null, "The object should exist"    )
+        test.equal(   result.toString(), "\'{Hello}\',7:{Hello},")
+        test.done()
     },
     'invalid format' : function (test) {
 
-        var invalidNetstring = "0:0:,";
+        var invalidNetstring = "0:0:,"
 
         test.throws ( function() {
-           m2n.parseNetstring(invalidNetstring);
-        });
+           m2n.parseNetstring(invalidNetstring)
+        })
 
-        test.done();
+        test.done()
     }
 };
 
@@ -135,41 +133,97 @@ exports['testGetJSON'] = {
         done()
     },
     'To JSON': function (test) {
-
         test.deepEqual(m2n.getJSON("a:'b', c:'d', [1,2,3]}"),  null, "Should be null")
         test.deepEqual(m2n.getJSON('{"a":"b", "c":"d", "e":[1,2,3]}'), { a: 'b', c: 'd', e: [ 1, 2, 3 ] },
             "String should be converted to object")
-
         test.done()
     }
-}
+};
 
-//exports['testConnect'] = {
-//
-//    setUp   : function (done) {
-//
-//        this.params = { recv_spec:'tcp://127.0.0.1:9997',
-//            send_spec:'tcp://127.0.0.1:9996',
-//            ident:'test' }
-//
-//        this.mockServer = zmq.socket("push")
-//        this.mockServer.bindSync("tcp://127.0.0.1:9997")
-//
-//        done()
-//    },
-//    tearDown: function (done) {
-//        this.mockServer.close()
-//        done()
-//    },
-//    'test connection established and message parsed correctly': function (test) {
-//        m2n.bindToMong2PullQ( this.params, function( msg, responseCallback ) {
-//            test.equal(msg.path, "/test", "The path should be /test")
-//            test.equal(msg.uuid, "test", "The uuid should be test")
-//            test.equal(msg.connId, "2", "The connection id should be 2")
-//            test.equal(msg.headers, "{}", "The headers should be empty")
-//            test.equal(msg.body, "{}", "The headers should be empty")
-//        })
-//        this.mockServer.send('test 2 /test 0:,0:,')
-//        test.done()
-//    }
-//}
+exports['testBuildResponse'] = {
+
+    setUp               : function (done) {
+        done()
+    },
+    'Builds correctly'  : function (test) {
+        var zmqResponse
+        zmqResponse = m2n.buildZmqResponse(455, 192, {status:"200 OK", headers: "{test:test}", body:"{test:test}"})
+
+        test.deepEqual(zmqResponse.substring(0, 26), "455 3:192, HTTP/1.1 200 OK");
+        test.done()
+    }
+};
+
+exports['testbindToPushQ'] = {
+
+    setUp          : function (done) {
+        this.params = { spec:"tcp://127.0.0.1:9996"}
+        done()
+    },
+    tearDown: function (done) {
+        done()
+    },
+    'create socket'     : function (test) {
+        var tempQueue = m2n.bindToPushQ(this.params)
+        tempQueue.push({})
+
+        // Exception will be thrown if socket already exists.
+        test.throws(function() { m2n.bindToPushQ(this.params) })
+        test.done()
+    }
+};
+
+exports['testBindToPullQ'] = {
+
+    setUp          : function (done) {
+        this.params = { spec:"tcp://127.0.0.1:9997", id:"test" }
+        done()
+    },
+    tearDown: function (done) {
+        done()
+    },
+    'create socket'     : function (test) {
+        m2n.bindToPullQ(this.params)
+
+        // Exception will be thrown if socket already exists.
+        test.throws(function() { m2n.bindToPullQ(this.params) })
+        test.done()
+    }
+};
+
+exports['testBindToMong2PubQ'] = {
+
+    setUp          : function (done) {
+        this.params = { spec:"tcp://127.0.0.1:9998", id:"test"}
+        done()
+    },
+    tearDown: function (done) {
+        done()
+    },
+    'create socket'     : function (test) {
+        var tempQueue = m2n.bindToMong2PubQ(this.params)
+        tempQueue.publish(2, 4, {status:"200 OK", headers: "", body:""})
+
+        // Exception will be thrown if socket already exists.
+        test.throws(function() { m2n.bindToMong2PubQ(this.params) })
+        test.done()
+    }
+};
+
+exports['bindToMong2PullQ'] = {
+
+    setUp          : function (done) {
+        this.params = { spec:"tcp://127.0.0.1:9999", id:"test"}
+        done()
+    },
+    tearDown: function (done) {
+        done()
+    },
+    'create socket'     : function (test) {
+        m2n.bindToMong2PullQ(this.params)
+
+        // Exception will be thrown if socket already exists.
+        test.throws(function() { m2n.bindToMong2PullQ(this.params) })
+        test.done()
+    }
+};
