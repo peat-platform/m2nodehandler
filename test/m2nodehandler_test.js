@@ -213,7 +213,7 @@ exports['testBindToMong2PubQ'] = {
 exports['bindToMong2PullQ'] = {
 
     setUp          : function (done) {
-        this.params = { spec:"tcp://127.0.0.1:9999", id:"test"}
+        this.params = { spec:'tcp://127.0.0.1:9999', id:'test'}
         done()
     },
     tearDown: function (done) {
