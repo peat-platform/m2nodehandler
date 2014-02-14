@@ -115,9 +115,9 @@ Create a file named script.js file and paste the following JavaScript.
 
 var zmq = require('m2nodehandler');
 
-var mongrel2PubQ = zmq.bindToMong2PubQ({ spec:'tcp://127.0.0.1:49996', id:'test' })
+var mongrel2PubQ = zmq.sender({ spec:'tcp://127.0.0.1:49996', id:'test', bind:false, type:'push' })
 
-zmq.bindToMong2PullQ( { spec:'tcp://127.0.0.1:49997', id:'test' }, function( msg ) {
+zmq.receiver( { spec:'tcp://127.0.0.1:49997', id:'test', bind:false, type:'pull' }, function( msg ) {
 
    console.log("Headers");
    for (var i in msg.headers ){
@@ -132,7 +132,7 @@ zmq.bindToMong2PullQ( { spec:'tcp://127.0.0.1:49997', id:'test' }, function( msg
 
    var response = zmq.Response( zmq.status.OK_200, zmq.header_json, '{"message":"Hello, World!"}' )
 
-   mongrel2PubQ.publish(msg.uuid, msg.connId, response);
+   mongrel2PubQ.send(msg.uuid, msg.connId, response);
 
 });
 
@@ -155,9 +155,9 @@ Create a file named node1.js and paste the following code.
 ```javascript
 var zmq   = require('m2nodehandler')
 
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49994'});
+var pushQ = zmq.sender({spec:'tcp://127.0.0.1:49994', id:'nodetest1', bind:false, type:'push'});
 
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49995', id:'node1'}, function( msg ) {
+zmq.receiver( {spec:'tcp://127.0.0.1:49995', id:'node1', bind:false, type:'pull'}, function( msg ) {
 
    msg.count = msg.count + 1;
 
@@ -171,9 +171,9 @@ Create another file called node2.js and paste the following JavaScript.
 ```javascript
 var zmq  = require('m2nodehandler')
 
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49995'});
+var pushQ = zmq.sender({spec:'tcp://127.0.0.1:49995', id:'nodetest2', bind:false, type:'push'});
 
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49994', id:'node2'}, function( msg ) {
+zmq.receiver( {spec:'tcp://127.0.0.1:49994', id:'node2', bind:false, type:'pull'}, function( msg ) {
 
    console.log("Count = " + msg.count);
 
