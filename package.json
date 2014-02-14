@@ -25,7 +25,8 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "zmq": "~2.5.1"
+    "zmq" : "~2.5.1",
+    "dbc" : "git+ssh://git@gitlab.openi-ict.eu:dbc.git#master"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
