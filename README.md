@@ -38,42 +38,30 @@ grunt jenkins
    
 ### Functions
 
-* __bindToMong2PullQ(config, callback)__
-    This function binds to a Mongrel2 ZeroMQ pull queue with the given IP address and port. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed.
+* __sender(config)__
+   This function sets up a *publish* or *push* ZeroMQ socket with the ip address and port supplied in the config parameter.
     * **parameters**  
-    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
-    *function (msg)* this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function *e.g. function(msg){console.log(msg)}*
+    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. { spec:'tcp://127.0.0.1:49906', bind:false, id:'c', type:'pub',  isMongrel2:true }*
+    ```bash
+    {
+        spec       : 'Socket IP and Port ',
+        bind       : 'Boolean flag for port binding',
+        id         : 'Connection ID',
+        type       : 'Socket Type: pull, push, pub,. sub',
+        isMongrel2 : 'Boolean flag for socket connection to mongrel2',
+        subscribe  : 'subscription filter for sub sockets'
+    }
+    ```
     * **returns**  null
 
 
     
-* __bindToMong2PubQ__
- This function binds to a Mongrel2 ZeroMQ push queue with the given IP address and port. Returns an object that can push data onto the queue.  
+* __receiver(config, callback)__
+ This function sets up a *pull* or *subscription* ZeroMQ socket with the ip address and port supplied in the config parameter. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed.
     * **parameters**  
-    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
-    * **returns**  
-    An object with the function **publish** which pushes a __Response__ object with the Mongrel2 queue's **uuid** and the connected clients **connid** onto the bound queue. e.g. *obj.publish('uuid', 'connid', zmq.Response( m2n.status.OK_200, m2n.header_json, '{"message":"Hello, World!"}' ))*
-
-
-
-* __bindToPullQ(config, callback)__
-    This function binds to a ZeroMQ pull queue with the given IP address and port. It attaches the given callback function to the on message event of the queue. I.e. every time a message is recieved the function is executed.
-    * **parameters**  
-    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to and the **id** of the connection. *e.g. {spec:'tcp://127.0.0.1:49994', id:'my_unique_id'}*  
-    *callback* this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function *e.g. function(msg){console.log(msg)}*
+    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. { spec:'tcp://127.0.0.1:49906', bind:false, id:'c', type:'sub',  subscribe:'' }*
+    *function* (msg) this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function e.g. function(msg){console.log(msg)}*
     * **returns**  null
-    
-
-
-* __bindToPushQ(config)__
-    This function binds to a ZeroMQ push queue with the given IP address and port. Returns an object that can push a JavaScript object to the queue.  
-    * **parameters**  
-    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. {spec:'tcp://127.0.0.1:49994'}*  
-    * **returns**  
-    An object with the function **push** which pushes a JavaScript object onto the bound queue. e.g. *obj.push({result:42})* 
-    
-
-
 
 
 ## Examples
@@ -127,9 +115,11 @@ Create a file named script.js file and paste the following JavaScript.
 
 var zmq = require('m2nodehandler');
 
-var mongrel2PubQ = zmq.bindToMong2PubQ({ spec:'tcp://127.0.0.1:49996', id:'test' })
+var mongrel2PubQ = zmq.sender({ spec:'tcp://127.0.0.1:49996', id:'test', bind:false, type:'push' })
 
-zmq.bindToMong2PullQ( { spec:'tcp://127.0.0.1:49997', id:'test' }, function( msg ) {
+zmq.receiver( { spec:'tcp://127.0.0.1:49997', id:'test', bind:false, type:'pull' },
+   { spec:'tcp://127.0.0.1:49996', id:'test', bind:false, type:'push' }
+   function( msg ) {
 
    console.log("Headers");
    for (var i in msg.headers ){
@@ -138,13 +128,12 @@ zmq.bindToMong2PullQ( { spec:'tcp://127.0.0.1:49997', id:'test' }, function( msg
    console.log("UUID   : " + msg.uuid);
    console.log("CONNID : " + msg.connId);
    console.log("Path   : " + msg.path);
-   console.log("Body   : " + msg.body);
    console.log("JSON   : " + msg.json);
    console.log();
 
    var response = zmq.Response( zmq.status.OK_200, zmq.header_json, '{"message":"Hello, World!"}' )
 
-   mongrel2PubQ.publish(msg.uuid, msg.connId, response);
+   mongrel2PubQ.send(msg.uuid, msg.connId, response);
 
 });
 
@@ -167,9 +156,9 @@ Create a file named node1.js and paste the following code.
 ```javascript
 var zmq   = require('m2nodehandler')
 
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49994'});
+var pushQ = zmq.sender({spec:'tcp://127.0.0.1:49994', id:'nodetest1', bind:false, type:'push'});
 
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49995', id:'node1'}, function( msg ) {
+zmq.receiver( {spec:'tcp://127.0.0.1:49995', id:'node1', bind:false, type:'pull'}, { spec:'tcp://127.0.0.1:49994', id:'test', bind:false, type:'push' }, function( msg ) {
 
    msg.count = msg.count + 1;
 
@@ -183,9 +172,9 @@ Create another file called node2.js and paste the following JavaScript.
 ```javascript
 var zmq  = require('m2nodehandler')
 
-var pushQ = zmq.bindToPushQ({spec:'tcp://127.0.0.1:49995'});
+var pushQ = zmq.sender({spec:'tcp://127.0.0.1:49995', id:'nodetest2', bind:false, type:'push'});
 
-zmq.bindToPullQ( {spec:'tcp://127.0.0.1:49994', id:'node2'}, function( msg ) {
+zmq.receiver( {spec:'tcp://127.0.0.1:49994', id:'node2', bind:false, type:'pull'}, function( msg ) {
 
    console.log("Count = " + msg.count);
 
