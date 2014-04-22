@@ -9,7 +9,7 @@
   "author": "dmccarthy <dmccarthy@tssg.org>",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.openi-ict.eu:cloudlet_platform.git"
+    "url": "git@opensourceprojects.eu/git/p/openi/c60b/ad4e/cloudlet-platform.git"
   },
   "licenses": [
     {
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "zmq" : "~2.5.1",
-    "dbc" : "git+ssh://git@gitlab.openi-ict.eu:dbc.git#master"
+    "dbc" : "git+https://git@opensourceprojects.eu/git/p/openi/c60b/ad4e/dbc.git#master"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
