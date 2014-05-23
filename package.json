@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "zmq" : "~2.5.1",
-    "dbc" : "git+https://github.com/OPENi-ict/dbc.git"
+    "dbc" : "OPENi-ict/dbc"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
