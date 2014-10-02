@@ -67,6 +67,7 @@ exports['testResponseObject'] = {
 
         test.deepEqual(this.resp.headers, {"content-type": "application/json", "length":"56"}, "Should have length 56")
         test.deepEqual(m2n.status, { "OK_200": 200,
+            "NO_CONTENT_204": 204,
             "BAD_REQUEST_400": 400,
             "UNAUTHORIZED_401": 401,
             "FORBIDDEN_402": 402,
@@ -94,7 +95,6 @@ exports['testParse']          = {
         test.equal(   result.path,      "/test"         )
         test.equal(   result.headers.c, "d"             )
         test.equal(   result.json.a,    "b"             )
-        test.equal(   result.body,      "{\"a\":\"b\"}" )
         test.done()
     }
 };
@@ -147,83 +147,29 @@ exports['testBuildResponse'] = {
     },
     'Builds correctly'  : function (test) {
         var zmqResponse
-        zmqResponse = m2n.buildZmqResponse(455, 192, {status:"200 OK", headers: "{test:test}", body:"{test:test}"})
+        zmqResponse = m2n.buildZmqResponse(455, 192, "200 OK", "{test:test}", "{test:test}")
 
         test.deepEqual(zmqResponse.substring(0, 26), "455 3:192, HTTP/1.1 200 OK");
         test.done()
     }
 };
 
-exports['testbindToPushQ'] = {
+//exports['testbindToPushQ'] = {
+//
+//    setUp          : function (done) {
+//        this.params = { spec:"tcp://127.0.0.1:9996"}
+//        done()
+//    },
+//    tearDown: function (done) {
+//        done()
+//    },
+//    'create socket'     : function (test) {
+//        var tempQueue = m2n.bindToPushQ(this.params)
+//        tempQueue.push({})
+//
+//        // Exception will be thrown if socket already exists.
+//        test.throws(function() { m2n.bindToPushQ(this.params) })
+//        test.done()
+//    }
+//};
 
-    setUp          : function (done) {
-        this.params = { spec:"tcp://127.0.0.1:9996"}
-        done()
-    },
-    tearDown: function (done) {
-        done()
-    },
-    'create socket'     : function (test) {
-        var tempQueue = m2n.bindToPushQ(this.params)
-        tempQueue.push({})
-
-        // Exception will be thrown if socket already exists.
-        test.throws(function() { m2n.bindToPushQ(this.params) })
-        test.done()
-    }
-};
-
-exports['testBindToPullQ'] = {
-
-    setUp          : function (done) {
-        this.params = { spec:"tcp://127.0.0.1:9997", id:"test" }
-        done()
-    },
-    tearDown: function (done) {
-        done()
-    },
-    'create socket'     : function (test) {
-        m2n.bindToPullQ(this.params)
-
-        // Exception will be thrown if socket already exists.
-        test.throws(function() { m2n.bindToPullQ(this.params) })
-        test.done()
-    }
-};
-
-exports['testBindToMong2PubQ'] = {
-
-    setUp          : function (done) {
-        this.params = { spec:"tcp://127.0.0.1:9998", id:"test"}
-        done()
-    },
-    tearDown: function (done) {
-        done()
-    },
-    'create socket'     : function (test) {
-        var tempQueue = m2n.bindToMong2PubQ(this.params)
-        tempQueue.publish(2, 4, {status:"200 OK", headers: "", body:""})
-
-        // Exception will be thrown if socket already exists.
-        test.throws(function() { m2n.bindToMong2PubQ(this.params) })
-        test.done()
-    }
-};
-
-exports['bindToMong2PullQ'] = {
-
-    setUp          : function (done) {
-        this.params = { spec:'tcp://127.0.0.1:9999', id:'test'}
-        done()
-    },
-    tearDown: function (done) {
-        done()
-    },
-    'create socket'     : function (test) {
-        m2n.bindToMong2PullQ(this.params)
-
-        // Exception will be thrown if socket already exists.
-        test.throws(function() { m2n.bindToMong2PullQ(this.params) })
-        test.done()
-    }
-};
