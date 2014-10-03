@@ -226,7 +226,7 @@ zmq.receiver( { spec:'tcp://127.0.0.1:49997', id:'test', bind:false, type:'pull'
 Finally install this module, start the node application and browse to this URL (http://localhost/data/test).
 
 ```javascript
-npm install git+ssh://git@gitlab.openi-ict.eu:m2nodehandler.git
+npm install git+ssh://git@github.com:OPENi-ict/m2nodehandler.git
 node script.js
 ```
 
