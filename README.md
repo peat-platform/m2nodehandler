@@ -3,13 +3,19 @@
 m2nodehandler doubles as a node.js Mongrel2 handler and a lightweight abstraction of ZeroMQ messaging functions. It handles node-application-to-node-application communication and node-application-to-mongrel2 communication.
 
 
-## Usage
 
-### Objects
-**status** - Contains object with human readable text to HTTP status code e.g. status.OK_200 = 200, FORBIDDEN_402 = 402, etc.
-**headers.plain**  - Response objects default headers for plain text.
-**headers.json**  -  Response objects default headers for JSON formatted content.
-**headers.html** -   Response objects default headers for HTML content.
+### API
+The following are a list of objects and functions exposed by this module.
+
+###objects
+
+**status** - object with a number of human readable HTTP status codes
+
+**standard_headers** is an object with a number of preset headers.
+
+    *plain*  - default headers for plain text.
+    *json*  -  default headers for JSON formatted content.
+    *html* -  default headers for HTML content.
 
    
 ### Functions
@@ -29,18 +35,42 @@ m2nodehandler doubles as a node.js Mongrel2 handler and a lightweight abstractio
     }
     ```
     * **returns**  null
+    
+Example of sender in action
+```JSON
+var sink = {spec:'tcp://127.0.0.1:49904', id:'f', bind:false, type:'pub',  isMongrel2:true }
 
+var sender = zmq.sender(sink)
+
+//uuid & connId are mongrel2 specific variables which can be extracted from the incoming message
+sender.send(uuid, connId, 200, zmq.standard_headers.json, {"message" : "Hello World!"});
+
+```
 
     
-* __receiver(config, callback)__
- This function sets up a *pull* or *subscription* ZeroMQ socket with the ip address and port supplied in the config parameter. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed.
-    * **parameters**  
-    *config* - JavaScript object containing the field **spec** whose value is the ip address and port that the function should bind to. *e.g. { spec:'tcp://127.0.0.1:49906', bind:false, id:'c', type:'sub',  subscribe:'' }*
-    *function* (msg) this callback function is attached to the on message event of the incoming queue. Each time a message is recieved from the queue this function is executed. The message is converted to JavaScript object before it is passed to this function e.g. function(msg){console.log(msg)}*
-    * **returns**  null
+* __receiver(source, client, callback(msg))__
+ This function sets up a *pull* or *subscription* ZeroMQ socket with the ip address and port supplied in the source parameter. The client parameter points to the Mongrel2 response queue, it is used to notify the client of errors that occur within the handler. It attaches the given callback function to the on message event of the queue. I.e. every time a message is received the callback function is executed with the existing msg.
+    
+Example of a reciever in action
+```JSON
+    
+var source = { spec:'tcp://127.0.0.1:49901', bind:false, type: 'pull', isMongrel2:true, id:'a' }
+var sink   = { spec:'tcp://127.0.0.1:49902', bind:false, type: 'pub',  isMongrel2:true, id:'b' }
+
+
+var sender = zmq.sender(sink)
+
+
+
+zmq.receiver(source, sink, function(msg) {
+    console.log(msg)
+    sender.send(msg.uuid, msg.connId, 200, zmq.standard_headers.json, {"message" : "Hello World!"});
+}
+```
 
 * __setCors(headers)__: overrides the default CORS headers which accept request from any origin. The following is the default.
 
+Sample headers object
 ```JSON
 {
    "access-control-allow-origin" : "*",
@@ -110,6 +140,13 @@ function(msg){
     'body'    : ...
 }
 ```
+
+* __setMongrel2UploadDir(dir)__ this function set the location of the Mongrel2 file upload dirctory. This should be set to the same value as *upload.temp_store* in your mongrel2 configuration file. This needs to be set to handle uploading large files, see section 5.1.8 Async Uploads of (http://mongrel2.org/manual/book-finalch6.html) for a full explanation. 
+
+***
+
+***
+
 
 ## Examples
 
@@ -242,10 +279,10 @@ node node2.js
 
 ## Contributors
 
-* Donal McCarthy (dmccarthy-tssg)
+* Donal McCarthy (https://github.com/dmccarthy-tssg)
+* Dylan Conway (https://github.com/Funi1234)
 
 https://github.com/OPENi-ict/m2nodehandler
-
 
 
 ## Release History
