@@ -25,22 +25,22 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "zmq" : "~2.5.1",
-    "dbc" : "OPENi-ict/dbc"
+    "zmq": "~2.5.1",
+    "dbc": "OPENi-ict/dbc"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.5.3",
+    "grunt": "^0.4.5",
+    "grunt-config": "",
     "grunt-contrib-clean": "",
     "grunt-contrib-concat": "",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-uglify": "",
-    "grunt-istanbul-coverage": "",
-    "grunt-qunit-cov": "",
-    "grunt-plato": "",
+    "grunt-contrib-watch": "~0.5.3",
     "grunt-istanbul": "",
-    "grunt": "~0.4.1",
-    "grunt-config":"",
+    "grunt-istanbul-coverage": "",
+    "grunt-plato": "",
+    "grunt-qunit-cov": "",
     "sinon": ""
   },
   "keywords": []
