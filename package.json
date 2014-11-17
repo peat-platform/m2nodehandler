@@ -25,8 +25,9 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "zmq": "~2.5.1",
-    "dbc": "OPENi-ict/dbc"
+    "dbc": "OPENi-ict/dbc",
+    "loglet": "git://github.com/OPENi-ict/loglet",
+    "zmq": "~2.5.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
