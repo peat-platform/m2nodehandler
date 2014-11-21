@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "dbc": "OPENi-ict/dbc",
+    "loglet": "git://github.com/OPENi-ict/loglet",
     "zmq": "~2.5.1"
   },
   "devDependencies": {
