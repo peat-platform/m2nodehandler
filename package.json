@@ -1,0 +1,38 @@
+{
+  "name": "m2nodehandler",
+  "description": "Node implementation of Mongrel2 handler",
+  "version": "0.1.0",
+  "homepage": "http://openi-ict.eu",
+  "publishConfig": {
+    "registry": "http://localhost:5984/registry/_design/app/_rewrite"
+  },
+  "author": "dmccarthy <dmccarthy@tssg.org>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:OPENi-ict/cloudlet-platform.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "openi-ict.eu/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/m2nodehandler.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "dependencies": {
+    "dbc": "OPENi-ict/dbc",
+    "loglet": "git://github.com/OPENi-ict/loglet",
+    "zmq": "~2.5.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "jshint-stylish": "^1.0.0"
+  },
+  "keywords": []
+}

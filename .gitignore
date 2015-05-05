@@ -25,3 +25,18 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+.npm
+
+## Directory-based project format
+.idea/workspace.xml
+.idea/tasks.xml
+# and these sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+
+## File-based project format
+*.ipr
+*.iml
+*.iws
