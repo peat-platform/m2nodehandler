@@ -9,7 +9,7 @@
   "author": "dmccarthy <dmccarthy@tssg.org>",
   "repository": {
     "type": "git",
-    "url": "git@github.com:OPENi-ict/cloudlet-platform.git"
+    "url": "git@github.com:peat-platform/cloudlet-platform.git"
   },
   "licenses": [
     {
@@ -25,8 +25,8 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "dbc": "OPENi-ict/dbc",
-    "loglet": "git://github.com/OPENi-ict/loglet",
+    "dbc": "peat-platform/dbc",
+    "loglet": "git://github.com/peat-platform/loglet",
     "zmq": "~2.5.1"
   },
   "devDependencies": {

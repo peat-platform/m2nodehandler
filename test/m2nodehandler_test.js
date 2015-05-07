@@ -2,7 +2,7 @@
  * Created by dmccarthy on 09/10/2013.
  */
 var sys       = require('sys')
-var zmq       = require('zmq')
+var zmq       = require('zmqM2Node')
 var sinon     = require('sinon')
 var base_path = require('./basePath.js')
 var m2n       = require(base_path + '../lib/m2nodehandler.js')
