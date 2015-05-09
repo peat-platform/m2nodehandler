@@ -9,7 +9,7 @@
   "author": "dmccarthy <dmccarthy@tssg.org>",
   "repository": {
     "type": "git",
-    "url": "git@github.com:peat-platform/cloudlet-platform.git"
+    "url": "git@github.com:peat-platform/m2nodehandler.git"
   },
   "licenses": [
     {
