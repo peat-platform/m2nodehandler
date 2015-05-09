@@ -2,7 +2,7 @@
   "name": "m2nodehandler",
   "description": "Node implementation of Mongrel2 handler",
   "version": "0.1.0",
-  "homepage": "http://openi-ict.eu",
+  "homepage": "http://peat-platform.org",
   "publishConfig": {
     "registry": "http://localhost:5984/registry/_design/app/_rewrite"
   },
