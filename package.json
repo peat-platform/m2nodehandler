@@ -14,7 +14,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "openi-ict.eu/blob/master/LICENSE-MIT"
+      "url": "peat-platform.eu/blob/master/LICENSE-MIT"
     }
   ],
   "main": "lib/m2nodehandler.js",
