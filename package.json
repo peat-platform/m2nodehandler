@@ -25,8 +25,8 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "dbc": "peat-platform/dbc",
-    "loglet": "git://github.com/peat-platform/loglet",
+    "dbc": "peat-platform/dbc#finalOPENiMerge",
+    "loglet": "git://github.com/peat-platform/loglet#finalOPENiMerge",
     "zmq": "~2.5.1"
   },
   "devDependencies": {
