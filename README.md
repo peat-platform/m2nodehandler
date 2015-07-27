@@ -272,7 +272,7 @@ pushQ.push({count:0})
 Finally install this module, start the two node applications in separate consoles. You should see the counter increase on the second console.
 
 ```javascript
-npm install git+ssh://git@gitlab.peat-platform.eu:m2nodehandler.git
+npm install git+ssh://git@gitlab.peat-platform.org:m2nodehandler.git
 node node1.js
 node node2.js
 ```
