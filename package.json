@@ -14,7 +14,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "openi-ict.eu/blob/master/LICENSE-MIT"
+      "url": "peat-platform.org/blob/master/LICENSE-MIT"
     }
   ],
   "main": "lib/m2nodehandler.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "dbc": "peat-platform/dbc",
     "loglet": "git://github.com/peat-platform/loglet",
-    "zmq": "~2.5.1"
+    "zmq":     "~2.5.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
