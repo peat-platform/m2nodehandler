@@ -25,8 +25,8 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "cloudlet-utils": "peat-platform/cloudlet-utils#develop",
-    "loglet": "peat-platform/loglet#develop",
+    "cloudlet-utils": "git://github.com/peat-platform/cloudlet-utils#develop",
+    "loglet": "git://github.com/peat-platform/loglet#develop",
     "zmq":     "~2.12.0"
   },
   "devDependencies": {
