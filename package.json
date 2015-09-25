@@ -27,7 +27,7 @@
   "dependencies": {
     "dbc": "peat-platform/dbc",
     "loglet": "peat-platform/loglet",
-    "zmq":     "~2.12.0"
+    "zmq":     "~2.13.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
